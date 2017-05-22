@@ -1,0 +1,95 @@
+﻿
+@{
+    ViewBag.Title = "Podsumowanie";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    Array tabela = Array.CreateInstance(typeof(string), (int)TempData["wysokosc"], (int)TempData["szerokosc"]);
+    //Array.CreateInstance(typeof(string), (int)TempData["wysokosc"], (int)TempData["szerokosc"]);
+    tabela = (string[,])ViewData["podsumowanie"];
+
+    //string[,] tabela =(string [,])ViewData["podsumowanie"];
+}
+
+<h2>Podsumowanie czas @TempData["czas"] </h2>
+
+    
+    <table>
+
+    @{
+        string zmm;
+
+        for (int i = 0; i < (int)TempData["wysokosc"]; i++)
+        {
+            @Html.Raw("<tr>")
+            for (int j = 0; j < (int)TempData["szerokosc"]; j++)
+            {
+                zmm = tabela.GetValue(i, j).ToString();
+                @Html.Raw("<td style=\""+ "border-style: solid; border-width: 2px 2px 2px 2px;  border-color: #64a3d0; " + "\">")
+                @Html.Raw("<h3> "+zmm+ " </h3>")
+                @Html.Raw("</td>")
+
+            }
+            @Html.Raw("</tr>")
+
+          
+        }
+
+    }
+
+
+</table>
+
+
+
+
+
+
+
+@*<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.raport_id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.send_time)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.recipient)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.trash_class)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.weight)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.isSend)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.raport_id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.send_time)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.recipient)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.trash_class)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.weight)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.isSend)
+        </td>
+       
+    </tr>
+}
+
+</table>*@

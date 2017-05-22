@@ -1,0 +1,174 @@
+﻿@model Int32
+@{
+    ViewBag.Title = "Blokowanie";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Blokowanie</h2>
+
+
+    <div class="row">
+        <div class="col-md-2"><button class="btn btn-success makeActive">POZWÓL DODAWAĆ</button></div>
+        <div class="col-md-4"><button class="btn btn-warning makeNotActive">ZABLOKUJ DODAWANIE</button></div>
+        <div class="col-md-6">
+
+        </div>
+    </div>
+    <div>--------------------------------------------------------------------------------------------------------------</div>
+    <div>--------------------------------------------------------------------------------------------------------------</div>
+    <div>--------------------------------------------------------------------------------------------------------------</div>
+    
+    <div>--------------------------------------------------------------------------------------------------------------</div>
+    <div>--------------------------------------------------------------------------------------------------------------</div>
+    <div>--------------------------------------------------------------------------------------------------------------</div>
+    <div class="row">
+        <div class="col-md-6">
+            <h3>
+                Tym samym spowodujesz, że użytkownicy mogą wprowadzać raport dla nowego okresu. Jeśli chcesz zmienić
+                okres, ale nie pozwolić dodawać użytkownikom raportu - ZABLOKUJ DODAWANIE.
+            </h3>
+        </div>
+        <div class="col-md-6 getData">
+
+        </div>
+
+       
+
+        
+    </div>
+ <div class="row">
+    <div class="col-md-offset-1">
+        <button class="btn btn-warning iterateTime">ZAKOŃCZ OKRES</button>
+    </div>
+</div>
+
+    <h1> Bieżący okres: @Model</h1>
+
+    <div>--------------------------------------------------------------------------------------------------------------</div>
+    <div>--------------------------------------------------------------------------------------------------------------</div>
+    <div>--------------------------------------------------------------------------------------------------------------</div>
+
+    <div>--------------------------------------------------------------------------------------------------------------</div>
+    <div>--------------------------------------------------------------------------------------------------------------</div>
+    <div>--------------------------------------------------------------------------------------------------------------</div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <h3>
+                    Tym samym spowodujesz, że użytkownicy mogą wprowadzać raport dla przeszłego okresu rozliczeniowego.
+                   Lepiej tego nie wciskaj, no chyba, że jest problem z "gapami".
+                </h3>
+            </div>
+            <div class="col-md-6 getData2">
+
+            </div>
+
+           
+        </div>
+<div class="row">
+    
+    <div class="col-md-offset-1">
+        <button class="btn btn-warning backInTime">POWRÓT DO PRZESZŁOŚCI (DLA GAPIÓW)</button>
+    </div>
+</div>
+ 
+
+
+
+<script>
+
+    $(".iterateTime").click(function () {
+
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("ZakonczOkres", "Rozliczenia")',
+            success: function (returndata) {
+                var stri = "<h2>Rozpocząłeś nowy okres raportowania! Nowy okres: " + returndata + "</h2>";
+
+                $(".getData").empty();
+                $(".getData2").empty();
+                $(".getData").append(stri);
+            },
+            error: function (returndata) {
+                var stri = "<h2>Rozpocząłeś nowy okres raportowania! Nowy okres: " + returndata + "</h2>";
+
+                $(".getData").empty();
+                $(".getData2").empty();
+                $(".getData").append(stri);
+            }
+        });
+    });
+
+    $(".backInTime").click(function () {
+
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("PowrotDoPrzeszlosci", "Rozliczenia")',
+            success: function (returndata) {
+                var stri = "<h2>W 1985 roku dr Emmett Brown buduje wehikuł czasu. Jego przyjaciel Marty McFly przenosi się w lata 50. i niechcący przeszkadza w poznaniu się swoim rodzicom.! Powróciłeś do przeszłości: " + returndata + "</h2>";
+
+                $(".getData").empty();
+                $(".getData2").empty();
+                $(".getData2").append(stri);
+            },
+            error: function (returndata) {
+                var stri = + "<h2>W 1985 roku dr Emmett Brown buduje wehikuł czasu. Jego przyjaciel Marty McFly przenosi się w lata 50. i niechcący przeszkadza w poznaniu się swoim rodzicom.! Powróciłeś do przeszłości: " + returndata + "</h2>";
+
+                $(".getData").empty();
+                $(".getData2").empty();
+                $(".getData2").append(stri);
+            }
+        });
+    });
+
+
+
+    $(".makeActive").click(function () {
+
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("OdblokujRaportowanie", "Rozliczenia")',
+            success: function (returndata) {
+                var stri = "<h2>Odblokowałeś możliwość dodawania raportów dla kierowników placów!</h2>";
+
+                $(".getData").empty();
+                $(".getData2").empty();
+
+                $(".getData").append(stri);
+            },
+            error: function (returndata) {
+                var stri = "<h2>Odblokowałeś możliwość dodawania raportów dla kierowników placów!</h2>";
+
+                $(".getData").empty();
+                $(".getData2").empty();
+
+                $(".getData").append(stri);
+            }
+        });
+
+
+
+    });
+
+    $(".makeNotActive").click(function () {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("ZablokujRaportowanie", "Rozliczenia")',
+            success: function (returndata) {
+                var stri = "<h2>Zablokowałeś możliwość dodawania raportów dla kierowników placów!</h2>";
+
+                $(".getData").empty();
+                $(".getData2").empty();
+
+                $(".getData").append(stri);
+            },
+            error: function (returndata) {
+                var stri = "<h2>Zablokowałeś możliwość dodawania raportów dla kierowników placów!</h2>";
+
+                $(".getData").empty();
+                $(".getData2").empty();
+                $(".getData").append(stri);
+            }
+        });
+    });
+</script>

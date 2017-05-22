@@ -1,0 +1,1 @@
+C:\Users\adudek\documents\visual studio 2015\Projects\WebApplication1\databaseTester\obj\Debug\databaseTester.csprojResolveAssemblyReference.cache

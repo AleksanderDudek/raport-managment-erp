@@ -1,0 +1,26 @@
+﻿
+
+@{
+    ViewBag.Title = "EditPlac";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>EditPlac</h2>
+<form method="post" action="EditPlac">
+
+    <input type="hidden" name="nameId" id="nameId" value="@TempData["stringId"]"/>
+    <select name="namePlace" id="namePlace" class="optns form-group col-md-12">
+        <option selected value="@TempData["userPlace"]"> @TempData["userPlace"] </option>
+        @{
+
+            foreach (var itemAn in TempData["listForPlaces"] as List<string>)
+            {
+
+                <option value="@itemAn">@itemAn</option>
+            }
+        }
+        }
+        @*tutaj beda dodane opcje, moze wyjsc suprise z prefixem itemAn_ *@
+    </select>
+    <button type="submit" class="btn btn-success">Przydziel</button>
+</form>

@@ -1,0 +1,105 @@
+﻿@model Int32
+@{
+    ViewBag.Title = "Blokowanie";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Blokowanie</h2>
+
+<div>
+    <div class="row">
+        <div class="col-md-2"><button class="btn btn-success makeActive">POZWÓL DODAWAĆ</button></div>
+        <div class="col-md-4"><button class="btn btn-warning makeNotActive">ZABLOKUJ DODAWANIE</button></div>
+        <div class="col-md-6 getData">
+
+        </div>
+    </div>
+    <div>--------------------------------------------------------------------------------------------------------------</div>
+    <div>--------------------------------------------------------------------------------------------------------------</div>
+    <div>--------------------------------------------------------------------------------------------------------------</div>
+    
+    <div>--------------------------------------------------------------------------------------------------------------</div>
+    <div>--------------------------------------------------------------------------------------------------------------</div>
+    <div>--------------------------------------------------------------------------------------------------------------</div>
+    <div class="row">
+        <div class="col-md-6">
+            <h3>
+                Tym samym spowodujesz, że użytkownicy mogą wprowadzać raport dla nowego okresu. Jeśli chcesz zmienić
+                okres, ale nie pozwolić dodawać użytkownikom raportu - ZABLOKUJ DODAWANIE.
+            </h3>
+        </div>
+    </div>
+
+    <div class="col-md-offset-1">
+        <button class="btn btn-warning iterateTime">ZAKOŃCZ OKRES</button>
+    </div>
+
+        <h1> Bieżący okres: @Model</h1>
+   
+</div>
+
+
+<script>
+
+    $(".iterateTime").click(function () {
+
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("ZakonczOkres", "Rozliczenia")',
+            success: function (returndata) {
+                var stri = "Rozpocząłeś nowy okres raportowania! Nowy okres: "+returndata;
+
+                $(".getData").empty();
+                $(".getData").append(stri);
+            },
+            error: function (returndata) {
+                var stri = "Rozpocząłeś nowy okres raportowania! Nowy okres: " + returndata;
+
+                $(".getData").empty();
+                $(".getData").append(stri);
+            }
+        });
+    });
+
+    $(".makeActive").click(function () {
+
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("OdblokujRaportowanie", "Rozliczenia")',
+            success: function (returndata) {
+                var stri = "Odblokowałeś możliwość dodawania raportów dla kierowników placów!";
+
+                $(".getData").empty();
+                $(".getData").append(stri);
+            },
+            error: function (returndata) {
+                var stri = "Odblokowałeś możliwość dodawania raportów dla kierowników placów!";
+
+                $(".getData").empty();
+                $(".getData").append(stri);
+            }
+        });
+
+
+
+    });
+
+    $(".makeNotActive").click(function () {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("ZablokujRaportowanie", "Rozliczenia")',
+            success: function (returndata) {
+                var stri = "Zablokowałeś możliwość dodawania raportów dla kierowników placów!";
+
+                $(".getData").empty();
+                $(".getData").append(stri);
+            },
+            error: function (returndata) {
+                var stri = "Zablokowałeś możliwość dodawania raportów dla kierowników placów!";
+
+                $(".getData").empty();
+                $(".getData").append(stri);
+            }
+        });
+    });
+</script>

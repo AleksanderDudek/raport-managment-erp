@@ -1,0 +1,47 @@
+﻿<tr class="formElement">
+    @* to zawiera wszystkie inputy *@
+
+
+    <td>
+        @* tutaj chce wrzucic liste rozwijana z ustawiona poprzednia wartoscia jako selected *@
+        <select name="someOption" id="someOption" class="optns form-group col-md-12">
+            <option @*selected*@ value="1"> Rodzaj... </option>
+            @{
+
+                foreach (var itemAn in TempData["listForSelect"] as List<string>)
+                {
+
+                    <option value="@itemAn">@itemAn</option>
+                }
+            }
+            }
+            @*tutaj beda dodane opcje, moze wyjsc suprise z prefixem itemAn_ *@
+        </select>
+
+    </td>
+    <td>
+        <input name="someNumber" id="someNumber" class="form-group " type="number" value="" /><br />
+
+        @*@Html.EditorFor(modelItem => item.someNumber)*@
+    </td>
+    <td>
+        <input name="someText" id="someText" class="form-group col-md-12" type="text" value="Uwagi..." /><br />
+
+
+        @*@Html.EditorFor(modelItem => item.someText)*@
+    </td>
+
+    <td>
+        @* to malo wazne, ale niech zostanie, bo json sie wysypie inaczej *@
+        <input type="hidden" id="Id" name="Id" value="" />
+
+        @*@Html.DisplayFor(modelItem => item.Id, new { @type = "hidden"})*@
+    </td>
+
+    <td>
+        <div class="rowKiller btn btn-danger">
+        USUŃ
+        </div>
+    </td>
+ 
+</tr>

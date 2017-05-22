@@ -1,0 +1,15 @@
+﻿@{
+    ViewBag.Title = "UsunRaport";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Usuń Raport</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        @Html.ActionLink("Tak, USUWAM", "UsunPotwierdzenie", new { id = TempData["wtf"] })
+    </div>
+    <div class="col-md-6">
+        @Html.ActionLink("Nie, RAPORT ZOSTAJE", "EdytujRaport")
+    </div>
+</div>

@@ -1,0 +1,30 @@
+﻿
+@{
+    ViewBag.Title = "TestAuto";
+}
+
+<h2>TestAuto</h2>
+
+<h2>@ViewBag.Message</h2>
+
+@*@{
+
+        string ctner = Request.QueryString["token"];
+        if(ctner!=null)
+        {
+            if(String.Equals(ctner,ViewBag.Message))
+            {
+                <h2> Autoryzacja przeszla poprawnie </h2>
+                /* tutaj bedzie pewnie redirect i nadanie uprawnien*/
+            }
+            else
+            {
+                <h2>Cos jest zle, hasze sa rozne </h2>
+            }
+        }
+        else {
+            <h2> Nie ma atrybutu token</h2>
+        }
+    }*@
+
+

@@ -1,0 +1,74 @@
+﻿@model IEnumerable<WebApplication1.DatabaseFiles.SendRecordType>
+
+@{
+    ViewBag.Title = "OgladajRekordySend";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Ogladaj Rekordy Wysyłki</h2>
+
+<tr>
+    <th> <b>Utworzył:</b> <h3>@TempData["userName"]</h3></th>
+    <th><b>Typ:</b> <h3> @TempData["raportKind"]</h3></th>
+    <th>
+        <b>Ostatnia modyfikacja:</b> <h3> @TempData["lastModification"]</h3>
+    </th>
+</tr>
+
+@*<p>
+    @Html.ActionLink("Create New", "Create")
+</p>*@
+<table class="table">
+    <tr>
+        @*<th>
+                @Html.DisplayNameFor(model => model.Raport.userID)
+            </th>*@
+    <tr>
+        <th class="col-md-3">
+            DATA WYSTAWIENIA WZ
+        </th>
+        <th class="col-md-3">
+            ODBIORCA
+        </th>
+        <th class="col-md-3">
+            KLASA ZŁOMU
+        </th>
+        <th class="col-md-2">
+            WAGA (w tonach)
+        </th>
+    </tr>
+        @*<th>
+            @Html.DisplayNameFor(model => model.isSend)
+        </th>*@
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        @*<td>
+            @Html.DisplayFor(modelItem => item.Raport.userID)
+        </td>*@
+        <td class="col-md-3">
+            @Html.DisplayFor(modelItem => item.send_time)
+        </td>
+        <td class="col-md-3">
+            @Html.DisplayFor(modelItem => item.recipient)
+        </td>
+        <td class="col-md-3">
+            @Html.DisplayFor(modelItem => item.trash_class)
+        </td>
+        <td class="col-md-2">
+            @Html.DisplayFor(modelItem => item.weight)
+        </td>
+        @*<td>
+            @Html.DisplayFor(modelItem => item.isSend)
+        </td>*@
+        @*<td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.IdSendRecord }) |
+            @Html.ActionLink("Details", "Details", new { id=item.IdSendRecord }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.IdSendRecord })
+        </td>*@
+    </tr>
+}
+
+</table>

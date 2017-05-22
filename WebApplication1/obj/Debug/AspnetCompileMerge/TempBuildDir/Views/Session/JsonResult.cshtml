@@ -1,0 +1,140 @@
+﻿@model IEnumerable<WebApplication1.Models.TrashViewModel>
+
+@{
+    ViewBag.Title = "JsonResult";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+
+}
+<div class="appendHere">
+    <h2>Raport</h2>
+</div>
+
+<div class="row">
+
+    <div class="col-md-3"><h2>Kto wprowadzał: @ViewBag.Username </h2></div>
+    <div class="col-md-1"></div>
+    <div class="col-md-3"><h2>Plac : @ViewBag.Fieldname</h2> </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-3"><h2>Czas nadesłania : @ViewBag.Datename</h2> </div>
+
+
+
+</div>
+
+
+<table class="table">
+    <tr >
+        <th>
+            @Html.Label("KLASY ZŁOMU")
+        </th>
+        <th >
+            @Html.Label("ILOŚCI")
+        </th>
+        <th >
+            @Html.Label("UWAGI")
+        </th>
+        <th></th>
+    </tr>
+
+
+    @foreach (var item in Model)
+    {
+        <tr class="formElement">
+           
+            <td >
+                @Html.EditorFor(modelItem => item.someOption, new { @style = "width:50%" })
+            </td>
+            <td >
+                @Html.EditorFor(modelItem => item.someText, new { @style = "width:20%" })
+            </td>
+            <td>
+                @Html.EditorFor(modelItem => item.someNumber, new { @style = "width:30%" })
+            </td>
+            <td>
+                @Html.TextBoxFor(modelItem => item.Id, new { @type = "hidden" })
+
+            </td>
+        </tr>
+    }
+
+</table>
+
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-3">
+        <button class="btn btn-info submiter">ZATWIERDŹ RAPORT</button>
+    </div>
+    <div class="col-lg-6"></div>
+</div>
+
+@*tutaj nalezy dorobic przycisk zapisz, fajnie jakby jednak mozna bylo zmienic zlom inaczej niz recznie*@
+
+
+
+
+<script>
+
+
+
+    $(document).on('click', '.submiter', function (e) {
+        getValues(this); //this to obiekt formularza?
+
+    });
+
+
+    var getValues = function (myForm) {
+        console.log(myForm);
+
+
+        var array = [];
+        var parser;
+
+        $(".formElement").each(function (i, elem) {
+
+            //parser.empty()
+            parser = {
+                Id: $("#item_Id", $(this)).val(),
+                someOption: $("#item_someOption", $(this)).val(),
+                someText: $("#item_someText", $(this)).val(),
+                someNumber: $("#item_someNumber", $(this)).val()
+            };
+            console.log(parser);
+            array.push(parser);
+
+        });
+
+        console.log(array);
+
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("neededPass", "Session")',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({ json: array }),
+
+            success: function (returndata) {
+
+                var stri = "";
+                stri += "<button type=\"button\" class=\"btn btn-success\">SUKCES<\/button>";
+                stri += "";
+
+
+                $(".appendHere").empty();
+                $(".appendHere").append(stri);
+
+
+
+
+                if (returndata.ok)
+                    window.location = returndata.newurl;
+                else
+                    window.alert(returndata.message);
+            }
+        });
+
+    }
+
+
+
+</script>

@@ -1,0 +1,76 @@
+﻿@model IEnumerable<WebApplication1.Models.RaportViewModel>
+
+@{
+    ViewBag.Title = "EdytujRaport";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edytuj Raport</h2>
+
+
+<table class="table">
+    <tr>
+        <th>
+            KTO STWORZYŁ
+        </th>
+        <th>
+
+            Rodzaj
+        </th>
+        <th>
+            UTWORZONO:
+        </th>
+        <th>
+            MODYFIKOWANO:
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.whoCreated )
+        </td>
+
+        <td>
+            @{
+                if (item.isMinus == false)
+                {
+                    WriteLiteral("STAN PLACU");
+                }
+                else
+                {
+                    WriteLiteral("STAN PLACU");
+                }
+            }
+
+
+        </td>  
+        <td>
+            @Html.DisplayFor(modelItem => item.creationTime )
+        </td>       
+        <td>
+            @Html.DisplayFor(modelItem => item.modificationTime )
+        </td>
+        <td>
+            @{
+                if (item.isMinus == false)
+                {
+                    @Html.ActionLink("Edytuj", "EdytujRekordy", new { id = item.raportId }) 
+
+                }
+                else
+                {
+                    @*tutaj ma byc akcja dla SendRecordType*@
+                    @Html.ActionLink("Edytuj", "EdytujRekordySend", new { id = item.raportId }) 
+                }
+
+              
+
+            }
+            | @Html.ActionLink("Usuń", "UsunRaport", new { delId = item.raportId })
+        </td>
+    </tr>
+}
+
+</table>

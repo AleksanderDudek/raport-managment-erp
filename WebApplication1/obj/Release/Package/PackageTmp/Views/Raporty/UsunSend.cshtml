@@ -1,0 +1,16 @@
+﻿@model Int32
+@{
+    ViewBag.Title = "UsunRekordSend";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Usuń Rekord</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        @Html.ActionLink("Tak, USUWAM", "UsunRekordSendPotwierdzenie", new { id = @Model }, null)
+    </div>
+    <div class="col-md-6">
+        @Html.ActionLink("Nie, REKORD POZOSTAJE", "EdytujRaport")
+    </div>
+</div>

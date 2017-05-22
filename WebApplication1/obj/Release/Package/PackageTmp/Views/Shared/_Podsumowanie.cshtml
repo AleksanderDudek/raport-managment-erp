@@ -1,0 +1,44 @@
+﻿
+
+@{
+    Array tabelass = Array.CreateInstance(typeof(string), (int)TempData["wys"], (int)TempData["szer"]);
+    //Array.CreateInstance(typeof(string), (int)TempData["wysokosc"], (int)TempData["szerokosc"]);
+    tabelass = (string[,])ViewData["podsum"];
+
+    //string[,] tabela =(string [,])ViewData["podsumowanie"];
+}
+
+<div class="row">
+    @{
+        <h3>PLAC @TempData["placeName"]</h3>
+
+    }
+    
+    <table>
+
+
+        @{
+            string zmienna;
+
+            for (int i = 0; i < (int)TempData["wys"]; i++)
+            {
+                @Html.Raw("<tr>")
+                for (int j = 0; j < (int)TempData["szer"]; j++)
+                {
+                    zmienna = tabelass.GetValue(i, j).ToString();
+                    @Html.Raw("<td style=\"" + "border-style: solid; border-width: 2px 2px 2px 2px;  border-color: #64a3d0; " + "\">")
+                    @Html.Raw("<h3> " + zmienna + " </h3>")
+                    @Html.Raw("</td>")
+
+                }
+                @Html.Raw("</tr>")
+
+
+            }
+
+        }
+    </table>
+    <h3> WAGA CAŁOŚCI: @TempData["sumsumsum"]</h3>
+
+</div>
+

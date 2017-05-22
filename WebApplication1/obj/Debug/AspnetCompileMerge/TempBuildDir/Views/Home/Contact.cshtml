@@ -1,0 +1,75 @@
+﻿<body ng-app="exampleApp" ng-controller="DynamicFormCtrl as ctrl">
+    <div>
+        <button ng-click="ctrl.addForm(0)">Form One</button>
+        <button ng-click="ctrl.addForm(1)">Form Two</button>
+        <button ng-click="ctrl.addForm(2)">Form Three</button>
+    </div>
+
+    <div ng-repeat="form in ctrl.displayedForms track by $index">
+        <ng-include src="form"></ng-include>
+    </div>
+
+    <script type="text/ng-template" id="form1.tpl.html">
+        <div class="formElement">
+            Klasa:<select class="optns" ng-model="user.class">
+                <option selected value="1"> Rodzaj... </option>
+                <option value="2">2</option>
+                @*tutaj beda dodane opcje*@
+            </select>
+            Ilość: <input type="number" ng-model="user.number" value="" /><br />
+            Uwagi: <input type="text" ng-model="user.text" value="" /><br />
+        </div>
+    </script>
+
+
+
+
+
+    <script type="text/ng-template" id="form2.tpl.html">
+        <label>
+            Form two gives you choices: <input type="radio" /> <input type="radio" />
+        </label>
+    </script>
+
+    <script type="text/ng-template" id="form3.tpl.html">
+        <button>Form three is a button</button>
+    </script>
+</body>
+
+
+
+
+
+
+<script>
+    var app =  angular.module("exampleApp", []);
+
+  app.controller("DynamicFormCtrl", function () {
+      var ctrl = this;
+
+      var forms = [
+        "form1.tpl.html",
+        "form2.tpl.html",
+        "form3.tpl.html",
+      ];
+
+      ctrl.displayedForms = [];
+
+      ctrl.addForm = function (formIndex) {
+          ctrl.displayedForms.push(forms[formIndex]);
+      }
+
+      ctrl.getInput = function ()
+      {
+          var my = Element.find('.formElement');
+          angular.forEach(my, function () {
+              
+          });
+          
+      }
+  });
+
+
+  
+
+</script>

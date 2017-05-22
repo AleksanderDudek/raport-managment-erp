@@ -1,0 +1,43 @@
+﻿<tr class="formElement">
+
+
+    <td class="col-md-2">
+        <input type="text" name="send_time" id="send_time" value="Data wystawienia WZ..."  data-toggle="tooltip" data-placement="top" title="Np. tak: 28.12.04" />
+    </td>
+
+    <td class="col-md-4">
+        <input type="text" name="recipient" id="recipient" value="Odbiorca..."  data-toggle="tooltip" data-placement="top" title="Np. tak: Ogórek Sp. z o.o"/>
+    </td>
+
+    <td class="col-md-3">
+        <select name="class_name" id="class_name" class="optns form-group col-md-12" ng-model="user.class" data-toggle="tooltip" data-placement="top" title="Klasa złomu">
+            <option selected value="1"> Rodzaj... </option>
+            @{
+
+                foreach (var item in TempData["listForSelect"] as List<string>)
+                {
+
+                    <option value="@item">@item</option>
+                }
+            }
+            }
+            @*tutaj beda dodane opcje*@
+        </select>
+    </td>
+
+    <td class="col-md-2">
+        <input type="text" name="weight" id="weight" value=""  data-toggle="tooltip" data-placement="top" title="Np. tak: 3,14 "/>
+    </td>
+
+
+    <td class="col-md-1">
+        <div class="rowKiller btn btn-danger">USUŃ
+            @*<img src="~/fonts/remove.png" />*@
+        </div>
+    </td>
+
+
+    <td>
+        <input type="hidden" id="Id" name="Id" value="@ViewBag.IdNotId" />
+    </td>
+</tr>

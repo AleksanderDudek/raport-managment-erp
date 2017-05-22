@@ -1,0 +1,208 @@
+﻿@model IEnumerable<WebApplication1.Models.TrashViewModel>
+
+@*@model WebApplication1.Models.TrashViewModel*@
+
+
+@{
+    ViewBag.Title = "Raportowanie stanów placowych";
+
+
+}
+
+@*kod z daty 25.08 - problem z wyswietlaniem nowych fragmentow i databindingiem*@
+
+<h1>RAPORT</h1>
+<hr />
+@using (Html.BeginForm(@*"Index", "Session", FormMethod.Post, new { @class = "form-horizontal", role = "form" }*@))
+{
+ 
+    @*@Html.ValidationSummary("", new { @class = "text-danger" })*@
+    @Html.ActionLink("Dodaj kolejny...", "Add", null, new { id = "addItem" })
+
+    <div id="editorRows">
+        @foreach (var item in Model)
+        {
+            Html.RenderPartial("_SingleTrash", item);
+        }
+    </div>
+
+   
+
+    <input type="submit" value="Zrobione" />
+} 
+
+
+@*kod z daty 25.08 - problem z wyswietlaniem nowych fragmentow i databindingiem*@
+
+
+
+
+
+
+
+@*kod z daty 23-4.08 - problem z databindingiem, nie pozwala dodawac selectedlistitem w dropdprzy
+    kolejnej linii z danymi *@
+
+
+@using (Html.BeginForm("Index", "Session", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+
+    <h1>RAPORT</h1>
+    <hr />
+
+    <div class="row" style="margin: 10px,5px,10px,5px">
+        <div class="col-md-8">
+            <div style="margin: 10px,5px,10px,5px">
+                @*nazwa usera/email*@
+                <h2>USERNAME</h2>
+            </div>
+            @*tu moze byc np plac i cos tam jeszcze, data *@
+        </div>
+
+        <div class="col-md-3" style="margin: 10px,5px,10px,5px">
+            @*tutaj znak +*@
+            <a href="javascript:void(0);" class="add_button" title="Add field"><img src="~/fonts/addSign.jpg" /></a>
+
+        </div>
+    </div>
+
+    <div class="row" style="margin: 10px,5px,10px,5px">
+        @*przerwa na odleglosc albo jedziemy z margin na box model*@
+    </div>
+
+
+
+    //pola na liste///////////
+    <div class="field_wrapper" style="margin: 10px,5px,10px,5px">
+        <div class="row">
+            
+            @*<div class="input-group col-md-4">
+                                @Html.DropDownListFor(Model=>Model.someOption, ViewData["list"] as List<SelectListItem>, new { @class = "form-control" })
+            </div>
+
+
+
+            <div class="form-group col-md-2">
+                <div class="row">
+                    @Html.LabelFor(m => m.someNumber, new { @class = "col-md-4 control-label" })
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(m => m.someNumber, new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+
+           
+            <div class="form-group col-md-5">
+                <div class="row">
+                    @Html.LabelFor(m => m.someText, new { @class = "col-md-4 control-label" })
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(m => m.someText, new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>*@
+
+        
+
+            <a href="javascript:void(0);" class="remove_button" title="Remove field">
+                <img src="remove-icon.png" />
+            </a>
+
+
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+    /////////
+    <div class="row" style="margin: 10px,5px,10px,5px">
+        @*tu przycisk ZAPISZ - zapisuje na pozniej formularz, WYSLIJ - wysyla formularz do bazy do analizy*@
+        <div class="form-group">
+            <div class="col-md-offset-1 col-md-10">
+                <input type="submit" class="btn btn-default" value="Zachowaj pracę" />
+            </div>
+        </div>
+
+        <div> </div>
+    </div>
+
+
+    @*<div class="form-group">
+
+            @Html.LabelFor(m => m.someText, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.someText, new { @class = "form-control" })
+            </div>
+
+        </div>*@
+
+}
+
+
+
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        var maxField = 10; //Input fields increment limitation
+        var addButton = $('.add_button'); //Add button selector
+        var wrapper = $('.field_wrapper'); //Input field wrapper
+
+        //var fieldHTML = '<div><input type="text" name="field_name[]" value=""/>
+        //    <a href="javascript:void(0);" class="remove_button" title="Remove field"><img src="remove-icon.png"/></a></div>'; //New input field html
+
+        @*var first = '@Html.TextBoxFor(m => m.someNumber, new { @class = "form-control" })';
+        var combo = '<div class="col-md-10">' + first + '</div>';
+        var second = '<a href="javascript:void(0);" class="remove_button" title="Remove field"><img src="remove-icon.png"/></a></div>';
+        var fieldHTML = '<div>' + combo + second + '</div>';*@
+
+       @*var fieldHTML2 = [
+'<div class="row">',
+'            <div class="input-group col-md-4">',
+'                                @Html.DropDownListFor(Model=>Model.someOption, ViewData["list"] as List<SelectListItem>, new { @class = "form-control" })',
+'            </div>',
+'            <div class="form-group col-md-2">',
+'                <div class="row">',
+'                    @Html.LabelFor(m => m.someNumber, new { @class = "col-md-4 control-label" })',
+'                    <div class="col-md-7">',
+'                        @Html.TextBoxFor(m => m.someNumber, new { @class = "form-control" })',
+'                    </div>',
+'                </div>',
+'            </div>',
+'            <div class="form-group col-md-5">',
+'                <div class="row">',
+'                    @Html.LabelFor(m => m.someText, new { @class = "col-md-4 control-label" })',
+'                    <div class="col-md-7">',
+'                        @Html.TextBoxFor(m => m.someText, new { @class = "form-control" })',
+'                    </div>',
+'                </div>',
+'            </div>',
+'            <a href="javascript:void(0);" class="remove_button" title="Remove field">',
+'                <img src="remove-icon.png" />',
+'            </a>',
+'        </div>'
+].join('');*@
+        var x = 1; //Initial field counter is 1
+
+        $(addButton).click(function () { //Once add button is clicked
+            if (x < maxField) { //Check maximum number of input fields
+                x++; //Increment field counter
+                $(wrapper).append(fieldHTML2); // Add field html
+            }
+        });
+
+        $(wrapper).on('click', '.remove_button', function (e) { //Once remove button is clicked
+            e.preventDefault();
+            $(this).parent('div').remove(); //Remove field html
+            x--; //Decrement field counter
+        });
+    });
+</script>

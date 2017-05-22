@@ -1,0 +1,70 @@
+﻿@model IEnumerable<WebApplication1.Models.MyViewModel>
+
+@{
+    ViewBag.Title = "Records";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+   
+}
+
+<div class="row"> ----------------------------------- </div>
+<div class="row"> ----------------------------------- </div>
+<div class="row"> ----------------------------------- </div>
+
+<div class="row"></div>
+
+@*<p>
+    @Html.ActionLink("Create New", "Create")
+</p>*@
+<div row>
+    <table class="table">
+        <tr>
+
+            <th>
+                @Html.DisplayName("ID")
+            </th>
+
+            <th>
+                @Html.DisplayName("IMIE")
+            </th>
+
+            <th>
+                @Html.DisplayName("ROLA")
+            </th>
+            <th>
+                @Html.DisplayName("PLAC")
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RoleId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PlacId)
+        </td>
+        <td>
+            @*ten new przekazuje parametr dla akcji jesli zrozumialem dobrze
+                wazne zeby nazwa routeobj musi byc taka jak argumentu w akcji*@
+
+            @Html.ActionLink("Zmień rolę", "Edit", "Home", new { userId = item.Id }, null) |
+            @Html.ActionLink("Zmień plac", "EditPlac", "Home", new { userId = item.Id }, null)
+
+            @*@Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
+        </td>
+
+    </tr>
+        }
+
+    </table>
+</div>

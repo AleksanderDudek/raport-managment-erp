@@ -1,0 +1,15 @@
+﻿
+
+@model  WebApplication1.Models.TrashViewModel
+
+@using WebApplication1.Helpers
+
+@using (Html.BeginCollectionItem("trashes"))
+{
+    <div class="editorRow">
+        @*Class: @Html.DropDownListFor(m => m.someOption, ViewData["list"] as List<SelectListItem>, new { @class = "form-control" })*@
+        Quantity: @Html.TextBoxFor(m => m.someNumber)
+        Info: @Html.TextBoxFor(m => m.someText)
+        <a href="#" class="deleteRow">delete</a>
+    </div>
+}

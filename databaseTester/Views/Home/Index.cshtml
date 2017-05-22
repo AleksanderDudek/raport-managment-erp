@@ -1,0 +1,117 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h1>Aplikacja do zbierania i analizowanai danych z placów</h1>
+</div>
+
+@{
+    if (User.IsInRole("Administrator"))
+    {
+        <div class="row">
+            <div class="col-md-4" style="margin: 3px 3px 3px 3px; border-style: solid; border-width: 5px 5px 5px 5px; border-color: #ff0000;">
+                <h3>
+                    Zarejestrowano użytkownika:
+                </h3>
+                <h2> @TempData["message"] </h2>
+            </div>
+            <div class="col-md-4" style="margin: 3px 3px 3px 3px; border-style: solid; border-width: 5px 5px 5px 5px; border-color: #ff0000;">
+                <h3>tu cos moze byc np. EDYTUJ UZYTKOWNIKA</h3>
+            </div>
+            <div class="col-md-3" style="margin: 3px 3px 3px 3px; border-style: solid; border-width: 5px 5px 5px 5px; border-color: #ff0000;">
+                <h3>albo nie musi</h3>
+            </div>
+        </div>
+        <div class="row">
+            @*<div class="col-md-1" style="margin: 3px 3px 3px 3px; border-style: solid; border-width: 5px 5px 5px 5px; border-color: #ff0000;">
+                    <h3>jakis pasek</h3>
+                </div>*@
+
+            <div class="col-md-8" style="margin: 3px 3px 3px 3px; border-style: solid; border-width: 5px 5px 5px 5px;  border-color: #ff0000;">
+                <h3>tu beda rekordy z bazy uzytkownikow</h3>
+                <h2> bedzie mozna edytowac z tego poziomu np. role</h2>
+
+
+                @{
+                    if (User.IsInRole("Administrator"))
+                    {
+                       <h2>@Html.ActionLink("EDYTUJ UŻYTKOWNIKÓW", "Records", "Home")</h2>
+                    }
+
+                }
+            </div>
+           
+          
+
+            <div class="col-md-3" style="margin: 3px 3px 3px 3px; border-style: solid; border-width: 5px 5px 5px 5px;  border-color: #ff0000;">
+                <h2> tu pomocniczy opis do kazdej roli co robi, sciagawka</h2>
+                <div>
+                    <div class="Rola"> <h2>Administrator</h2> </div>
+                    <div class="Opis">
+                        Może wszystko co chce. Poza usuwaniem loggow.
+                        Moze zmieniac dane, dodawac uzytkownikow.
+                    </div>
+                </div>
+                <div>
+                    <div class="Rola"> <h2>Analityk</h2> </div>
+                    <div class="Opis">
+                        Ma dostęp do raportów, odpytuje bazę pod kątem
+                        informacji, których potrzebuje, może pobierać
+                        raporty np. w formie PDF (??)
+                    </div>
+                </div>
+                <div>
+                    <div class="Rola"> <h2>Kierownik</h2> </div>
+                    <div class="Opis"> Widzi formularz, może uzupełniać </div>
+                </div>
+                <div>
+                    <div class="Rola"> <h2>Gość</h2> </div>
+                    <div class="Opis"> Jeszcze nie wiem, ale raczej nic </div>
+                </div>
+
+            </div>
+
+            <div class="col-md-8" style="margin: 3px 3px 3px 3px; border-style: solid; border-width: 5px 5px 5px 5px;  border-color: #ff0000;">
+                <h2>tu bedzie lista dodanych raportow</h2>
+            </div>
+        </div>
+        <div class="row">
+            
+        </div>
+                    }
+                  //manager to kierownik placu - potem mozna to zmienic
+  if(User.IsInRole("Manager"))
+       {
+      <div class="row">
+          <div class="col-md-5">
+              <h2> @Html.ActionLink("Podaj stan placu", "angus", "Home")</h2>
+              <p> Przekaż informacje w formie raportu o stanie złomu na Twoim placu </p>
+          </div>
+          <div class="col-md-5">
+              <h2>@Html.ActionLink("Podaj informacje o wysyłkach", "DaneWysylki", "Raporty")</h2>
+              <p> Przekaż informacje o wysyłkach do określonych firm </p>
+
+          </div>
+    
+      </div>
+       }
+                  //manager to dzial rozliczen - potem mozna to zmienic
+
+   if(User.IsInRole("Analytics"))
+       {
+      <div class="row">
+          <div class="col-md-5">
+              <h2> @Html.ActionLink("Podaj stan placu", "angus", "Home")</h2>
+              <p> Przekaż informacje w formie raportu o stanie złomu na Twoim placu </p>
+          </div>
+          <div class="col-md-5">
+              <h2>@Html.ActionLink("Podaj informacje o wysyłkach", "DaneWysylki", "Raporty")</h2>
+              <p> Przekaż informacje o wysyłkach do określonych firm </p>
+
+          </div>
+    
+      </div>
+       }
+   
+}

@@ -1,0 +1,70 @@
+﻿@model WebApplication1.Models.AspNetUserRoles
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edytuj role użytkowników</h2>
+
+<div class="col-md-12" style="margin: 3px 3px 3px 3px; border-style: solid; border-width: 2px 2px 2px 2px;  border-color: #64a3d0;">
+    <h2> OPIS RÓL</h2>
+    <div>
+        <div class="Rola"> <h2>Administrator - 1</h2> </div>
+        <div class="Opis">
+            Może wiele. Powinien być tylko jeden.
+        </div>
+    </div>
+    <div>
+        <div class="Rola"> <h2>Nadzorca - 2</h2> </div>
+        <div class="Opis">
+            Ma dostęp do raportów, może je przeglądać. Kończy okres rozliczenia poprzez
+            blokadę i rozpoczyna poprzez zdjęcie blokady.
+        </div>
+    </div>
+    <div>
+        <div class="Rola"> <h2 style="word-wrap:break-word">KierownikActive/NotActive - 3</h2> </div>
+        <div class="Opis">
+            Tworzy i edytuje raporty. Kierownik staje się NotActive
+            po założeniu blokady przez Nadzorce lub Administratora. Nie może wtedy nic zrobić
+        </div>
+    </div>
+    <div>
+        <div class="Rola"> <h2>Nieaktywny - 4</h2> </div>
+        <div class="Opis"> Nie może nic zrobić. Stan domyślny dla nowo utworzonego użytkownika. </div>
+    </div>
+
+</div>
+
+@using (Html.BeginForm("Edit", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.UserId)
+
+     
+
+
+        
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.RoleId, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.RoleId, new { @class = "form-control" })
+            </div>
+        </div>
+
+     
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Przyznaj" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Records")
+</div>

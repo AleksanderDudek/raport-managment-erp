@@ -1,0 +1,31 @@
+﻿
+
+<div class="formElement row">
+
+    <input type="hidden" id="Id" name="Id" value="@ViewBag.IdNotId" />
+    <div class="col-md-3">
+        <select name="someOption" id="someOption" class="optns form-group col-md-12" ng-model="user.class">
+            <option selected value="1"> Rodzaj... </option>
+            @{
+
+                foreach (var item in TempData["listForSelect"] as List<string>)
+                {
+
+                    <option value="@item">@item</option>
+                }
+            }
+            }
+            @*tutaj beda dodane opcje*@
+        </select>
+    </div>
+    <div class="col-md-2">
+        <input name="someNumber" id="someNumber" class="form-group col-md-12" type="number" ng-model="user.number" value="" text="Ilość..." /><br />
+    </div>
+    <div class="col-md-6">
+        <input name="someText" id="someText" class="form-group col-md-12" type="text" ng-model="user.text" value="Uwagi..." /><br />
+    </div>
+    <div class="col-md-1">
+        <div class="btn btn-danger rowKiller">USUŃ</div>
+    </div>
+</div>
+

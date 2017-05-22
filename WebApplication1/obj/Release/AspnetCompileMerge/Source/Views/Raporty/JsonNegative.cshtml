@@ -1,0 +1,141 @@
+﻿@model IEnumerable<WebApplication1.Models.SendViewModel>
+
+@{
+    ViewBag.Title = "JsonNegative";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="appendHere">
+    <h2>Raport</h2>
+</div>
+
+<div class="row">
+
+    <div class="col-md-3"><h2>Kto wprowadzał: @ViewBag.Username </h2></div>
+    <div class="col-md-1"></div>
+    <div class="col-md-3"><h2>Plac : @ViewBag.Fieldname</h2> </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-3"><h2>Czas nadesłania : @ViewBag.Datename</h2> </div>
+
+
+
+</div>
+
+
+<table class="table">
+    <tr class="row">
+        <th class="col-md-3">
+            DATA WYSTAWIENIA WZ
+        </th>
+        <th class="col-md-3">
+            ODBIORCA
+        </th>
+        <th class="col-md-3">
+            KLASA ZŁOMU
+        </th>
+        <th class="col-md-2">
+            WAGA (w tonach)
+        </th>
+        <th></th>
+    </tr>
+
+
+    @foreach (var item in Model)
+    {
+        <tr class="row formElement">
+            <td>
+                @Html.EditorFor(modelItem => item.send_time)
+            </td>
+            <td>
+                @Html.EditorFor(modelItem => item.recipient)
+            </td>
+            <td>
+                @Html.EditorFor(modelItem => item.class_name )
+            </td>
+            <td>
+                @Html.EditorFor(modelItem => item.weight)
+            </td>
+
+        </tr>
+    }
+
+</table>
+
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-3">
+        <button class="btn btn-info submiter">ZATWIERDŹ RAPORT</button>
+    </div>
+    <div class="col-lg-6"></div>
+</div>
+
+@*tutaj nalezy dorobic przycisk zapisz, fajnie jakby jednak mozna bylo zmienic zlom inaczej niz recznie*@
+
+
+
+
+<script>
+
+
+
+    $(document).on('click', '.submiter', function (e) {
+        getValues(this); //this to obiekt formularza?
+
+    });
+
+
+    var getValues = function (myForm) {
+        console.log(myForm);
+
+
+        var array = [];
+        var parser;
+
+        $(".formElement").each(function (i, elem) {
+
+            //parser.empty()
+            parser = {
+                send_time: $("#item_send_time", $(this)).val(),
+                recipient: $("#item_recipient", $(this)).val(),
+                class_name: $("#item_class_name", $(this)).val(),
+                weight: $("#item_weight", $(this)).val()
+            };
+            console.log(parser);
+            array.push(parser);
+
+        });
+
+        console.log(array);
+
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("neededPassNeg", "Raporty")',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({ json: array }),
+
+            success: function (returndata) {
+
+                var stri = "";
+                stri += "<button type=\"button\" class=\"btn btn-success\">SUKCES<\/button>";
+                stri += "";
+
+
+                $(".appendHere").empty();
+                $(".appendHere").append(stri);
+
+
+
+
+                if (returndata.ok)
+                    window.location = returndata.newurl;
+                else
+                    window.alert(returndata.message);
+            }
+        });
+
+    }
+
+
+
+</script>

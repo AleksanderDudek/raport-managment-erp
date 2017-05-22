@@ -1,0 +1,75 @@
+﻿@model IEnumerable<WebApplication1.DatabaseFiles.SendRecordType>
+@{
+    ViewBag.Title = "EdytujRekordySend";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edytuj Rekordy</h2>
+
+
+
+@* tutaj bedzie info o samym raporcie *@
+
+
+<tr>
+    <th> <b>Utworzył:</b> <h3>@TempData["userName"]</h3></th>
+    <th><b>Typ:</b> <h3> @TempData["raportKind"]</h3></th>
+    <th>
+        <b>Ostatnia modyfikacja:</b> <h3> @TempData["lastModification"]</h3>
+    </th>
+</tr>
+
+<form>
+   
+    <table class="table">
+        <tr>
+            <th class="col-md-3">
+                DATA WYSTAWIENIA WZ            </th>
+            <th class="col-md-3">
+                ODBIORCA
+            </th>
+            <th class="col-md-3">
+                KLASA ZŁOMU
+            </th>
+            <th class="col-md-2">
+                WAGA (w tonach)
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.raport_id, new { @type = hidden })
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IdTrash)
+                    </td>*@
+                <td class="col-md-3">
+                    @Html.DisplayFor(modelItem => item.send_time)
+                </td>
+                <td class="col-md-3">
+                    @Html.DisplayFor(modelItem => item.recipient)
+                </td>
+                <td class="col-md-3">
+                    @Html.DisplayFor(modelItem => item.trash_class)
+                </td>
+                <td class="col-md-2">
+                    @Html.DisplayFor(modelItem => item.weight)
+                </td>
+
+                <td class="col-md-1">
+                    @Html.ActionLink("Zmień", "ZmienRekordSend", new
+               {
+                   rapId = item.raport_id as string,
+                   trashId = item.IdSendRecord
+
+               })
+
+                </td>
+            </tr>
+        }
+
+    </table>
+
+</form>

@@ -1,0 +1,73 @@
+﻿@model IEnumerable<WebApplication1.Klasy_Raport.Raport>
+
+@{
+    ViewBag.Title = "OgladajRaport";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Oglądaj Raport</h2>
+
+
+<table class="table">
+    <tr>
+        <th>
+            KTO STWORZYŁ
+        </th>
+        <th>
+
+            Rodzaj
+        </th>
+        <th>
+            UTWORZONO:
+        </th>
+        <th>
+            MODYFIKOWANO:
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+       <td>
+           @ViewBag.Message
+       </td>
+
+        <td>
+            @{
+                
+                    if (item.isMinus == 0)
+                    {
+                        WriteLiteral("STAN PLACU");
+                    }
+                    else
+                    {
+                        WriteLiteral("WYSYŁKA");
+                    }
+                
+            }
+        </td>  
+        <td>
+            @Html.DisplayFor(modelItem => item.creation_time)
+        </td>       
+        <td>
+            @Html.DisplayFor(modelItem => item.last_modyfication)
+        </td>
+        <td>
+            @{
+                if (item.isMinus == 0)
+                {
+                    @Html.ActionLink("Oglądaj", "OgladajRekordy", new { id = item.raport_id })
+
+                }
+                else
+                {
+                    @*tutaj ma byc akcja dla SendRecordType*@
+                    @Html.ActionLink("Oglądaj", "OgladajRekordySend", new { id = item.raport_id })
+                }
+            }
+
+        </td>
+    </tr>
+}
+
+</table>

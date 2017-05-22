@@ -1,0 +1,283 @@
+﻿@model IEnumerable<WebApplication1.Models.SendViewModel>
+
+@* dostaje zrzutowane rekordy ThrashType z poprzedniego raportu i powinien tez dostac info o nowym raporcie
+    dostaje rowniez w tempdata rozwijana liste  *@
+
+@{
+    ViewBag.Title = "PoprzedniSchematRaport";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>PoprzedniSchematRaport</h2>
+
+<div class="row">
+    <button class="btn btn-primary adderMaster">DODAJ WIERSZ</button>
+</div>
+<div>
+</div>
+<div class="row">
+    <table class="table here">
+        
+        <tr>
+            <th class="col-md-3">
+                DATA WYSTAWIENIA WZ
+            </th>
+            <th class="col-md-3">
+                ODBIORCA
+            </th>
+            <th class="col-md-3">
+                KLASA ZŁOMU
+            </th>
+            <th class="col-md-2">
+                WAGA (w tonach)
+            </th>
+        </tr>
+        
+
+        @foreach (var item in Model)
+        {
+            <tr class="formElement">
+                @* to zawiera wszystkie inputy *@
+
+                <td>
+                    <input name="send_time" id="send_time" class="form-group " type="text" value="@item.send_time" /><br />
+
+                    @*@Html.EditorFor(modelItem => item.someNumber)*@
+                </td>
+                <td>
+                    <input name="recipient" id="recipient" class="form-group " type="text" value="@item.recipient" /><br />
+
+                    @*@Html.EditorFor(modelItem => item.someNumber)*@
+                </td>
+                <td>
+                    @* tutaj chce wrzucic liste rozwijana z ustawiona poprzednia wartoscia jako selected *@
+                    <select name="class_name" id="class_name" class="optns form-group col-md-12">
+                        <option @*selected*@ value="@item.class_name"> @item.class_name </option>
+                        @{
+
+                            foreach (var itemAn in TempData["listForSelect"] as List<string>)
+                            {
+
+                                <option value="@itemAn">@itemAn</option>
+                            }
+                        }
+                        }
+                        @*tutaj beda dodane opcje, moze wyjsc suprise z prefixem itemAn_ *@
+                    </select>
+
+                </td>
+
+                <td>
+                    <input name="weight" id="weight" class="form-group " type="number" value="@item.weight" /><br />
+
+                    @*@Html.EditorFor(modelItem => item.someNumber)*@
+                </td>
+
+                <td>
+                    <button class="rowKiller btn btn-danger">
+                        USUŃ
+                        @*<img src="~/fonts/remove.png" />*@
+                    </button>
+                </td>
+                @*<td> to nie ma za bardzo znaczenia, bo i tak formularz leci dalej
+                        @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+                        @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+                        @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+                    </td>*@
+            </tr>
+                            }
+
+    </table>
+</div>
+
+<div class="row">
+   
+        <button class="btn btn-success sendFurther">ZATWIERDŹ</button>
+  
+</div>
+
+
+<script>
+
+    $(document).ready(function () {
+
+
+        $(document).on('click', '.rowKiller', function () {
+
+            nailIt(this);
+        });
+
+
+        var nailIt = function (element) {
+
+            $(".rowKiller").click(function () {
+
+                $(element).parent().parent().remove();
+
+            });
+        };
+
+        $number = 1;
+
+        $(".adderMaster").click(function () {
+            //alert('test');
+            $number = $number + 1;
+
+
+                var link = '@Url.Action("partial_send", "Raporty", new { id = "-1" })';
+                 link = link.replace("-1", $number);
+
+
+
+
+            event.preventDefault();
+            $.ajax({
+                url: link,
+                cache: false,
+                success: function (html) { $(".here").append(html); }
+            });
+
+            });
+
+        });
+</script>
+
+
+@*ten skrypt odpowiada za pobranie elementow*@
+<script>
+
+
+
+    $(document).on('submit', '.simple-form', function (e) {
+        getValues(this); //this to obiekt formularza?
+
+    });
+
+
+    var getValues = function (myForm) {
+        console.log(myForm);
+
+
+        var array = [];
+        var parser;
+
+        $(".formElement").each(function (i, elem) {
+
+            //parser.empty()
+            parser = {
+                send_time: $("#send_time", $(this)).val(),
+                recipient: $("#recipient", $(this)).val(),
+                class_name: $("#class_name", $(this)).val(),
+                weight: $("#weight", $(this)).val()
+            };
+            console.log(parser);
+            array.push(parser);
+
+        });
+
+        console.log(array);
+
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("DaneWysylki")',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({ json: array }),
+
+            success: function (returndata) {
+
+                var stri = "";
+                stri += "<button type=\"button\" class=\"btn btn-success\">SUKCES<\/button>";
+                stri += "";
+
+
+                $("#getData").empty();
+                $("#getData").append(stri);
+
+
+                console.log(returndata);
+
+                if (returndata.ok)
+                    window.location = returndata.newurl;
+                else
+                    window.alert(returndata.message);
+            },
+            error: function (result) {
+
+                console.log(result.statusText);
+                                //alert(e);
+            }
+
+        });
+
+    }
+
+
+
+</script>
+
+<script>
+
+
+
+    $(document).on('click', '.sendFurther', function (e) {
+        getValues(this); //this to obiekt formularza?
+
+    });
+
+
+    var getValues = function (myForm) {
+        console.log(myForm);
+
+
+        var array = [];
+        var parser;
+
+        $(".formElement").each(function (i, elem) {
+
+            //parser.empty()
+            parser = {
+                send_time: $("#send_time", $(this)).val(),
+                recipient: $("#recipient", $(this)).val(),
+                class_name: $("#class_name", $(this)).val(),
+                weight: $("#weight", $(this)).val()
+            };
+            console.log(parser);
+            array.push(parser);
+
+        });
+
+        console.log(array);
+
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("DaneWysylki","Raporty")',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({ json: array }),
+
+            success: function (returndata) {
+
+                var stri = "";
+                stri += "<button type=\"button\" class=\"btn btn-success\">SUKCES<\/button>";
+                stri += "";
+
+
+                $("#getData").empty();
+                $("#getData").append(stri);
+
+
+
+
+                if (returndata.ok)
+                    window.location = returndata.newurl;
+                else
+                    window.alert(returndata.message);
+            }
+        });
+
+    }
+
+
+
+</script>

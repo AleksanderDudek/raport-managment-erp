@@ -1,0 +1,150 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h1>Raportowanie Stanów Magazynowych (RSP)</h1>
+</div>
+
+@{
+    if (User.IsInRole("Administrator"))
+    {
+        <div class="row">
+            <div class="col-md-12" style="margin: 3px 3px 3px 3px; border-style: solid; border-width: 2px 2px 2px 2px;  border-color: #64a3d0;">
+                <h3>
+                    Zarejestrowano użytkownika:
+                </h3>
+                <h2> @TempData["message"] </h2>
+            </div>
+            @*<div class="col-md-4" style="margin: 3px 3px 3px 3px; border-style: solid; border-width: 2px 2px 2px 2px;  border-color: #64a3d0;">
+                <h3>tu cos moze byc np. EDYTUJ UZYTKOWNIKA</h3>
+            </div>*@
+            @*<div class="col-md-3" style="margin: 3px 3px 3px 3px; border-style: solid; border-width: 2px 2px 2px 2px;  border-color: #64a3d0;">
+                <h3>albo nie musi</h3>
+            </div>*@
+        </div>
+        <div class="row">
+            @*<div class="col-md-1" style="margin: 3px 3px 3px 3px; border-style: solid; border-width: 5px 5px 5px 5px; border-color: #ff0000;">
+                    <h3>jakis pasek</h3>
+                </div>*@
+
+            <div class="col-md-7" style="margin: 3px 3px 3px 3px; border-style: solid; border-width: 2px 2px 2px 2px;  border-color: #64a3d0;">
+                @*<h3>tu beda rekordy z bazy uzytkownikow</h3>
+                <h2> bedzie mozna edytowac z tego poziomu np. role</h2>*@
+
+
+                @{
+                    if (User.IsInRole("Administrator"))
+                    {
+                        <h2>@Html.ActionLink("EDYTUJ UŻYTKOWNIKÓW", "Records", "Home")</h2>
+                    }
+
+                }
+            </div>
+
+
+
+            <div class="col-md-4" style="margin: 3px 3px 3px 3px; border-style: solid; border-width: 2px 2px 2px 2px;  border-color: #64a3d0;">
+                <h2> OPIS RÓL</h2>
+                <div>
+                    <div class="Rola"> <h2>Administrator - 1</h2> </div>
+                    <div class="Opis">
+                        Może wiele. Powinien być tylko jeden.
+                    </div>
+                </div>w
+                <div>
+                    <div class="Rola"> <h2>Nadzorca - 2</h2> </div>
+                    <div class="Opis">
+                        Ma dostęp do raportów, może je przeglądać. Kończy okres rozliczenia poprzez
+                        blokadę i rozpoczyna poprzez zdjęcie blokady.
+                    </div>
+                </div>
+                <div>
+                    <div class="Rola"> <h2 style="word-wrap:break-word">KierownikActive/NotActive - 3</h2> </div>
+                    <div class="Opis">
+                        Tworzy i edytuje raporty. Kierownik staje się NotActive
+                    po założeniu blokady przez Nadzorce lub Administratora. Nie może wtedy nic zrobić</div>
+                </div>
+                <div>
+                    <div class="Rola"> <h2>Nieaktywny - 4</h2> </div>
+                    <div class="Opis"> Nie może nic zrobić. Stan domyślny dla nowo utworzonego użytkownika. </div>
+                </div>
+
+            </div>
+
+            @*<div class="col-md-8" style="margin: 3px 3px 3px 3px; border-style: solid; border-width: 5px 5px 5px 5px;  border-color: #ff0000;">
+                <h2>tu bedzie lista dodanych raportow</h2>
+            </div>*@
+        </div>
+        <div class="row">
+
+        </div>
+                    }
+
+
+
+                    //manager to kierownik placu - potem mozna to zmienic
+                    if (User.IsInRole("KierownikActive"))
+                    {
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h2> @Html.ActionLink("PODAJ INFORMACJE O STANIE PLACU", "angus", "Home")</h2>
+                                <h3> Przekaż informacje w formie raportu o stanie złomu na Twoim placu </h3>
+                            </div>
+                            <div class="col-md-4">
+                                <h2>@Html.ActionLink("PODAJ INFORMACJE O WYSYŁKACH", "DaneWysylki", "Raporty")</h2>
+                                <h3> Przekaż informacje o wysyłkach do określonych firm </h3>
+
+                            </div>
+                            <div class="col-md-4">
+                                <h2> @Html.ActionLink("SCHEMAT POPRZEDNIEGO RAPORTU", "PoprzedniSchemat", "Raporty")</h2>
+                                <h3> Uzupełnij raport na podstawie schematu poprzedniego raportu. Wybierz rodzaj raportu. </h3>
+                            </div>
+                            <div class="col-md-6">
+                                <h2>@Html.ActionLink("EDYTUJ RAPORT", "EdytujRaportUser", "Raporty")</h2>
+                                <h3> Jeśli musisz wprowadzić poprawki do raportu, który nadeslałeś - kliknij w powyższy link! </h3>
+
+                            </div>
+                        </div>
+                    }
+
+                    //not active po prostu komunikat
+                    if (User.IsInRole("KierownikNotActive"))
+                    {
+                        <div class="row">
+                            <div class="col-md-8">
+                                <h2> MINĄŁ TERMIN NADSYŁANIA RAPORTÓW</h2>
+                                <h3>
+                                    Jeśli nie przekazałeś raportu skontaktuj się z działem rozliczeń.
+                                    Jeśli przekazałeś już raport, to dobrze - po prostu poczekaj na kolejny
+                                    okres raportowania w następnym tygodniu.
+                                </h3>
+                            </div>
+
+
+                        </div>
+                    }
+                    //manager to dzial rozliczen - potem mozna to zmienic
+
+                    if (User.IsInRole("Nadzorca"))
+                    {
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h2> @Html.ActionLink("OGLĄDAJ RAPORTY", "OgladajRaportyWszystkie", "Raporty")</h2>
+                                <h3> Zobacz nadesłane do tej pory raporty lub podejrzyj czy wszystkie place wysłały swój raport. </h3>
+                            </div>
+                            <div class="col-md-4">
+                                <h2>@Html.ActionLink("ZAKOŃCZ OKRES", "Blokowanie", "Rozliczenia")</h2>
+                                <h3> Zablokuj lub odblokuj możliwość dodawania, edytowania raportów. </h3>
+
+                            </div>
+                            <div class="col-md-4">
+                                <h2>@Html.ActionLink("PODSUMOWANIE OKRESU", "Podsumowanie", "Rozliczenia")</h2>
+                                <h3> Zobacz podsumowanie ilości wysłanego złomu dla wszystkich i pojedynczych placów </h3>
+
+                            </div>
+
+                        </div>
+                    }
+
+}

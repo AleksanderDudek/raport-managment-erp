@@ -1,0 +1,13 @@
+﻿@model IEnumerable<Int32>
+@{
+    ViewBag.Title = "TabelaRozliczeniowa";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>TabelaRozliczeniowa</h2>
+@{ 
+    foreach (var item in Model)
+    {
+        Html.Display(item.ToString());
+    }
+}

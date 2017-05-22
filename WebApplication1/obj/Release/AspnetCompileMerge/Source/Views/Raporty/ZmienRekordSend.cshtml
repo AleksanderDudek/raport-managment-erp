@@ -1,0 +1,150 @@
+﻿@model WebApplication1.DatabaseFiles.SendRecordType
+
+@{
+    ViewBag.Title = "ZmienRekord";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Zmien Rekord</h2>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+
+
+<div class="row">
+    <div ng-app="formExample" ng-controller="ExampleController" class="col-md-9">
+
+        <div class="row">
+            <div class="col-md-2">DATA WYSTAWIENIA WZ</div>
+            <div class="col-md-4">ODBIORCA</div>
+            <div class="col-md-3">KLASA ZŁOMU</div>
+            <div class="col-md-2">WAGA (w tonach)</div>
+        </div>
+
+        <form novalidate class="simple-form">
+            <div class="here">
+                <div class="formElement row">
+
+                    <input type="hidden" id="raport_id" name="raport_id" value="@TempData["raport_id"]" />
+                    <input type="hidden" id="IdSendRecord" name="IdSendRecord" value="@TempData["IdTrash"]" />
+                    <input type="hidden" id="isSend" name="isSend" value="true" />
+
+                    <div class="col-md-2">
+                        <input type="text" name="send_time" id="send_time" value="@Model.send_time " />
+                    </div>
+
+                    <div class="col-md-4">
+                        <input type="text" name="recipient" id="recipient" value="@Model.recipient" />
+                    </div>
+
+                    <div class="col-md-3">
+                        <select name="class_name" id="class_name" class="optns form-group col-md-12" ng-model="user.class">
+                            <option selected value="@Model.trash_class"> @Model.trash_class </option>
+                            @{
+
+                                foreach (var item in TempData["listForSelect"] as List<string>)
+                                {
+
+                                    <option value="@item">@item</option>
+                                }
+                            }
+                            }
+                            @*tutaj beda dodane opcje*@
+                        </select>
+                    </div>
+
+                    <div class="col-md-2">
+                        <input type="number" name="weight" id="weight" value="@Model.weight" />
+                    </div>
+
+
+                    <div class="col-md-1">
+                        <div class="rowKiller btn btn-danger">
+                            @*<img src="~/fonts/remove.png" />*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <input type="button" value="Reset" />
+            <input type="submit" class="btn btn-success" value="Save" />
+        </form>
+
+    </div>
+    <div class="col-md-3">
+
+        <text id="getData">
+
+        </text>
+    </div>
+</div>
+
+<script>
+
+
+
+    $(document).on('submit', '.simple-form', function (e) {
+        getValues(this); //this to obiekt formularza?
+
+    });
+
+
+    var getValues = function (myForm) {
+        console.log(myForm);
+
+
+        var array = [];
+        var parser;
+
+        $(".formElement").each(function (i, elem) {
+
+            //parser.empty()
+            parser = {
+                IdSendRecord: $("#IdSendRecord", $(this)).val(),
+                raport_id: $("#raport_id", $(this)).val(),
+                send_time: $("#send_time", $(this)).val(),
+                recipient: $("#recipient", $(this)).val(),
+                trash_class: $("#class_name", $(this)).val(),
+                weight: $("#weight", $(this)).val(),
+                isSend: $("#isSend", $(this)).val()
+
+               
+            };
+            console.log(parser);
+            array.push(parser);
+
+        });
+
+        console.log(array);
+
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("dataChangeSend")',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({ json: array }),
+
+            success: function (returndata) {
+
+                var stri = "";
+                stri += "<button type=\"button\" class=\"btn btn-success\">SUKCES<\/button>";
+                stri += "";
+
+
+                $("#getData").empty();
+                $("#getData").append(stri);
+
+
+
+
+                if (returndata.ok)
+                    window.location = returndata.newurl;
+                else
+                    window.alert(returndata.message);
+            }
+        });
+
+    }
+
+
+
+</script>

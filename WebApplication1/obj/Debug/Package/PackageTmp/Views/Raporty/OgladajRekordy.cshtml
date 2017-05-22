@@ -1,0 +1,63 @@
+﻿@model IEnumerable<WebApplication1.Klasy_Raport.ThrashType>
+
+@{
+    ViewBag.Title = "OgladajRekordy";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<h2>Oglądaj Rekordy</h2>
+
+@* tutaj bedzie info o samym raporcie *@
+
+
+<tr>
+    <th> <b>Utworzył:</b> <h3>@TempData["userName"]</h3></th>
+    <th><b>Typ:</b> <h3> @TempData["raportKind"]</h3></th>
+    <th>
+        <b>Ostatnia modyfikacja:</b> <h3> @TempData["lastModification"]</h3>
+    </th>
+</tr>
+
+
+
+    <table class="table">
+        <tr>
+            <th class="col-md-4">
+               KLASA ZŁOMU
+            </th>
+            <th class="col-md-2">
+               ILOŚĆ
+            </th>
+            <th class="col-md-5">
+               UWAGI
+            </th>
+
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.raport_id, new { @type = hidden })
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IdTrash)
+                    </td>*@
+                <td class="col-md-4">
+                    @Html.DisplayFor(modelItem => item.ClassName)
+                </td>
+                <td class="col-md-2">
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td class="col-md-5">
+                    @Html.DisplayFor(modelItem => item.Information)
+                </td>
+              
+            </tr>
+        }
+
+    </table>
+
+

@@ -1,0 +1,218 @@
+﻿@model IEnumerable<WebApplication1.Models.TrashViewModel>
+
+@* dostaje zrzutowane rekordy ThrashType z poprzedniego raportu i powinien tez dostac info o nowym raporcie
+    dostaje rowniez w tempdata rozwijana liste  *@
+
+@{
+    ViewBag.Title = "PoprzedniSchematRaport";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>PoprzedniSchematRaport</h2>
+
+<div class="row">
+    <button class="btn btn-primary adderMaster">DODAJ WIERSZ</button>
+</div>
+<div>
+</div>
+<div class="row">
+    <table class="table here">
+        <tr>
+            <th>
+             KLASA ZŁOMU
+            </th>
+
+            <th>
+                WAGA (w tonach)
+            </th>
+
+            <th>
+               UWAGI
+            </th>
+            
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr class="formElement">
+                @* to zawiera wszystkie inputy *@
+
+
+                <td>
+                    @* tutaj chce wrzucic liste rozwijana z ustawiona poprzednia wartoscia jako selected *@
+                    <select name="someOption" id="someOption" class="optns form-group col-md-12">
+                        <option @*selected*@ value="@item.someOption"> @item.someOption </option>
+                        @{
+
+                            foreach (var itemAn in TempData["listForSelect"] as List<string>)
+                            {
+
+                                <option value="@itemAn">@itemAn</option>
+                            }
+                        }
+                        }
+                        @*tutaj beda dodane opcje, moze wyjsc suprise z prefixem itemAn_ *@
+                    </select>
+
+                </td>
+                <td>
+                    <input name="someNumber" id="someNumber" class="form-group " type="number" value="@item.someNumber" /><br />
+
+                    @*@Html.EditorFor(modelItem => item.someNumber)*@
+                </td>
+                <td>
+                    <input name="someText" id="someText" class="form-group col-md-12" type="text" value="@item.someText" /><br />
+
+
+                    @*@Html.EditorFor(modelItem => item.someText)*@
+                </td>
+
+                <td>
+                    @* to malo wazne, ale niech zostanie, bo json sie wysypie inaczej *@
+                    <input type="hidden" id="Id" name="Id" value="@item.Id" />
+
+                    @*@Html.DisplayFor(modelItem => item.Id, new { @type = "hidden"})*@
+                </td>
+
+                <td>
+                    <button class="rowKiller btn btn-danger"> USUŃ
+                        @*<img src="~/fonts/remove.png" />*@
+                    </button>
+                </td>
+                @*<td> to nie ma za bardzo znaczenia, bo i tak formularz leci dalej
+                        @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+                        @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+                        @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+                    </td>*@
+            </tr>
+                            }
+
+    </table>
+</div>
+
+<div class="row">
+   
+        <button class="btn btn-success sendFurther">ZATWIERDŹ</button>
+  
+</div>
+
+
+<script>
+
+    $(document).ready(function () {
+
+
+        $(document).on('click', '.rowKiller', function () {
+
+            nailIt(this);
+        });
+
+
+        var nailIt = function (element) {
+
+            $(".rowKiller").click(function () {
+
+                $($(element).parent()).parent().remove();
+
+            });
+        };
+
+
+
+
+        $number = 1;
+
+        $(".adderMaster").click(function () {
+            //alert('test');
+            $number = $number + 1;
+
+            //tu trzeba zmienic akcje i stworzyc nowy partial view (dla tabeli)
+            var link = '@Url.Action("partial_poprzedni", "Raporty", new { id = "-1" })';
+            link = link.replace("-1", $number);
+
+
+
+
+            event.preventDefault();
+            $.ajax({
+                url: link,
+                cache: false,
+                success: function (html) { $(".here").append(html); }
+            });
+        });
+
+
+
+
+    });
+
+
+</script>
+
+
+@*ten skrypt odpowiada za pobranie elementow*@
+<script>
+
+
+
+    $(document).on('click', '.sendFurther', function (e) {
+        getValues(this); //this to obiekt formularza?
+
+    });
+
+
+    var getValues = function (myForm) {
+        console.log(myForm);
+
+
+        var array = [];
+        var parser;
+
+        $(".formElement").each(function (i, elem) {
+
+            //parser.empty()
+            parser = {
+                Id: $("#Id", $(this)).val(),
+                someOption: $("#someOption", $(this)).val(),
+                someText: $("#someText", $(this)).val(),
+                someNumber: $("#someNumber", $(this)).val().replace('.', ',')
+            };
+            console.log(parser);
+            array.push(parser);
+
+        });
+
+        console.log(array);
+
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("angus","Home")',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({ json: array }),
+
+            success: function (returndata) {
+
+                var stri = "";
+                stri += "<button type=\"button\" class=\"btn btn-success\">SUKCES<\/button>";
+                stri += "";
+
+
+                $("#getData").empty();
+                $("#getData").append(stri);
+
+
+
+
+                if (returndata.ok)
+                    window.location = returndata.newurl;
+                else
+                    window.alert(returndata.message);
+            }
+        });
+
+    }
+
+
+
+</script>

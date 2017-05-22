@@ -1,0 +1,339 @@
+﻿
+@{
+    ViewBag.Title = "DaneWysylki";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Dane Wysyłki</h2>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+
+
+<div class="row">
+    <div ng-app="formExample" ng-controller="ExampleController" class="col-md-9">
+
+        <button class="btn btn-primary adderMaster" ng-controller="addRow" ng-click="addLine()">DODAJ WIERSZ</button>
+        <div class="row">
+            <div class="col-md-2">DATA WYSTAWIENIA WZ</div>
+            <div class="col-md-4">ODBIORCA</div>
+            <div class="col-md-3">KLASA ZŁOMU</div>
+            <div class="col-md-2">WAGA (w tonach)</div>
+        </div>
+        <form class="simple-form">
+            <div class="here">
+                <div class="formElement row">
+
+                    <div class="col-md-2">
+                        <input type="text" name="send_time" id="send_time" value="Data wyst. WZ..." />
+                    </div>
+
+                    <div class="col-md-4">
+                        <input type="text" name="recipient" id="recipient" value="Odbiorca..." />
+                    </div>
+
+                    <div class="col-md-3">
+                        <select name="class_name" id="class_name" class="optns form-group col-md-12" ng-model="user.class">
+                            <option selected value="1"> Rodzaj... </option>
+                            @{
+
+                                foreach (var item in TempData["listForSelect"] as List<string>)
+                                {
+
+                                    <option value="@item">@item</option>
+                                }
+                            }
+                            }
+                            @*tutaj beda dodane opcje*@
+                        </select>
+                    </div>
+
+                    <div class="col-md-2">
+                        <input type="number" name="weight" id="weight" value="" />
+                    </div>
+
+
+                
+                <div class="col-md-1">
+                    <div class="btn btn-danger rowKiller">USUŃ</div>
+                </div>
+
+                </div>
+            </div>
+            <input type="submit" class="btn btn-success" value="ZATWIERDŹ" />
+        </form>
+
+    </div>
+    <div class="col-md-3">
+
+        <text id="getData">
+
+        </text>
+    </div>
+</div>
+
+@*ten skrypt jest odpowiedzialny za nowo utworzona linie danych*@
+<script>
+
+    $(document).ready(function () {
+
+
+        $(document).on('click', '.rowKiller', function () {
+
+            nailIt(this);
+        });
+
+
+        var nailIt = function (element) {
+
+            $(".rowKiller").click(function () {
+
+                $(element).parent().parent().remove();
+
+            });
+        };
+
+        $number = 1;
+
+        $(".adderMaster").click(function () {
+            //alert('test');
+            $number = $number + 1;
+
+
+                var link = '@Url.Action("partial_send", "Raporty", new { id = "-1" })';
+                 link = link.replace("-1", $number);
+
+
+
+
+            event.preventDefault();
+            $.ajax({
+                url: link,
+                cache: false,
+                success: function (html) { $(".here").append(html); }
+            });
+
+            });
+
+        });
+</script>
+
+
+@*ten skrypt odpowiada za pobranie elementow*@
+<script>
+
+
+
+    $(document).on('submit', '.simple-form', function (e) {
+        getValues(this); //this to obiekt formularza?
+
+    });
+
+
+    var getValues = function (myForm) {
+        console.log(myForm);
+
+
+        var array = [];
+        var parser;
+
+        $(".formElement").each(function (i, elem) {
+
+            //parser.empty()
+            parser = {
+                send_time: $("#send_time", $(this)).val(),
+                recipient: $("#recipient", $(this)).val(),
+                class_name: $("#class_name", $(this)).val(),
+                weight: $("#weight", $(this)).val()
+            };
+            console.log(parser);
+            array.push(parser);
+
+        });
+
+        console.log(array);
+
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("DaneWysylki")',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({ json: array }),
+
+            success: function (returndata) {
+
+                var stri = "";
+                stri += "<button type=\"button\" class=\"btn btn-success\">SUKCES<\/button>";
+                stri += "";
+
+
+                $("#getData").empty();
+                $("#getData").append(stri);
+
+
+                console.log(returndata);
+
+                if (returndata.ok)
+                    window.location = returndata.newurl;
+                else
+                    window.alert(returndata.message);
+            },
+            error: function (result) {
+
+                console.log(result.statusText);
+                                //alert(e);
+            }
+
+        });
+
+    }
+
+
+
+</script>
+
+@* ten skrypt odpowiada za, chyba jest zbedny ale musze sie przyjrzec*@
+<script>
+    var app = angular.module('formExample', []);
+
+
+
+    app.controller('ExampleController', ['$scope', function ($scope) {
+        $scope.master = {};
+        $scope.nrofrows = 0;
+
+        $scope.update = function (user) {
+            $scope.master = angular.copy(user);
+
+
+
+            $scope.another = angular.copy()
+        };
+
+        $scope.reset = function () {
+            $scope.user = angular.copy($scope.master);
+        };
+
+        $scope.reset();
+    }]);
+
+
+
+
+
+    app.controller('addRow', ['$scope', function ($scope) {
+
+        $scope.arraySels = [];
+        $scope.arrayQuants = [];
+        $scope.arrayTexts = [];
+
+
+        $scope.getValues = function () {
+
+            var array = [];
+
+            $(".optns option:selected").each(function () {
+                array.push($(this));
+            });
+            $('.formElement :input').attr['number'].each(function () {
+                array.push($(this));
+            });
+
+            $('.formElement :input').attr['text'].each(function () {
+                array.push($(this));
+            });
+
+
+
+
+            var allInputs = $(':input');
+
+            @* przy selected ewentualnie jeszcze zamiania :select na klase/id*@
+            var selected = $(".optns option:selected").each(function () {
+                $scope.arraySels.push($(this));
+            });
+            var quantities = $('.formElement :input').attr['number'].each(function () {
+                $scope.arrayQuants.push($(this));
+            });
+
+            var texts = $('.formElement :input').attr['text'].each(function () {
+                $scope.arrayTexts.push($(this));
+            });
+
+            alert("works" + $scope.arrayQuants);
+        };
+
+
+
+        $scope.counter = 1;
+
+        $scope.addLine = function () {
+
+            $scope.counter += 1;
+
+            var strVar="";
+            strVar += " <div class=\"formElement row\">";
+            strVar += "";
+            strVar += "                  <input type=\"hidden\" id=\"Id\" name=\"Id\" value=\""+$scope.counter+"\"\/>";
+            strVar += "                <div class=\"col-md-2\">";
+            strVar += "                    <select name=\"someOption\" id=\"someOption\" class=\"optns form-group col-md-12\" ng-model=\"user.class\">";
+            strVar += "                        <option selected value=\"1\"> Rodzaj... <\/option>";
+            strVar += "                        <option value=\"test\">2<\/option>";
+            strVar += "                        <option value=\"2\">test<\/option>";
+            strVar += "                        <option value=\"2\">2<\/option>";
+            strVar += "                        <option value=\"3\">3<\/option>";
+            strVar += "                        @*tutaj beda dodane opcje*@";
+            strVar += "                    <\/select>";
+            strVar += "                <\/div>";
+            strVar += "                <div class=\"col-md-1\">";
+            strVar += "                    <input name=\"someNumber\"id=\"someNumber\" class=\"form-group col-md-12\" type=\"number\" ng-model=\"user.number\" value=\"\" text=\"Ilość...\" \/><br \/>";
+            strVar += "                <\/div>";
+            strVar += "                <div class=\"col-md-9\">";
+            strVar += "                    <input name=\"someText\"id=\"someText\" class=\"form-group col-md-12\" type=\"text\" ng-model=\"user.text\" value=\"\" text=\"Uwagi...\" \/><br \/>";
+            strVar += "                <\/div>";
+            strVar += "            <\/div>";
+
+
+
+
+
+            //          var html = [
+            //' <div class="formElement row">',
+            //'                <div class="col-md-2">',
+            //'                    <select name="select" class="optns form-group col-md-12" ng-model="user.class">',
+
+            //            '                          <option selected> Rodzaj... </option>',
+            //            '                        <option value="test">2</option>',
+            //            '                        <option value="2">test</option>',
+            //            '                        <option value="2">2</option>',
+            //            '                        <option value="3">3</option>',
+            //'                    </select>',
+            //'                </div>',
+            //'                <div class="col-md-1">',
+            //'                    <input name="num" class="form-group col-md-12" type="number" ng-model="user.number" value="" text="Ilość..." /><br />',
+            //'                </div>',
+            //'                <div class="col-md-9">',
+            //'                    <input name="user" class="form-group col-md-12" type="text" ng-model="user.text" value=""  text="Uwagi..." /><br />',
+            //'                </div>',
+            //'            </div>'
+            //          ].join('');
+
+
+            //$('.here').append(strVar);
+
+
+        };
+
+    }]);
+
+    app.controller('passForm', ['$scope', '$http', function ($scope, $http) {
+
+        $scope.data = $(".listaRekordow :input").value;
+
+        $scope.passIt = function ($scope, $http) {
+            $http.post("/Session/JsonResult", $scope.data);
+
+        };
+    }]);
+
+</script>

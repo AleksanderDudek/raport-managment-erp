@@ -1,0 +1,58 @@
+﻿@model IEnumerable<WebApplication1.DatabaseFiles.TrashClassTable>
+
+@{
+    ViewBag.Title = "KlasyPlanowanie";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Klasy złomu</h2>
+
+<p>
+    @Html.ActionLink("Dodaj nową klasę", "CreateClass")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.className)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.referenceName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.groupOfClass)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.isActive)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.isTerminal)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.className)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.referenceName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.groupOfClass)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.isActive)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.isTerminal)
+        </td>
+        <td>
+            @Html.ActionLink("Edytuj", "EditClass", "Home", new { id=item.referenceName }, null) |
+            @*@Html.ActionLink("Details", "Details", new { id=item.customId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.customId })*@
+        </td>
+    </tr>
+}
+
+</table>

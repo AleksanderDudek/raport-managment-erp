@@ -1,0 +1,37 @@
+﻿@using Microsoft.AspNet.Identity
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+    @Html.AntiForgeryToken()
+
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                
+                @{
+                    if (User.IsInRole("KierownikActive"))
+                    {
+                        <h3>@Html.ActionLink("Witam " + User.Identity.GetUserName() + "!", "OgladajRaporty", "Raporty", routeValues: null, htmlAttributes: new { title = "Raporty" })</h3>
+                    }
+                    if (User.IsInRole("Administrator"))
+                    {
+                        <h3>@Html.ActionLink("Witam " + User.Identity.GetUserName() + "!", "OgladajRaportyWszystkie", "Raporty", routeValues: null, htmlAttributes: new { title = "Raporty" })</h3>
+                    }
+                    if (User.IsInRole("Nadzorca"))
+                    {
+                        <h3>@Html.ActionLink("Witam " + User.Identity.GetUserName() + "!", "OgladajRaportyWszystkie", "Raporty", routeValues: null, htmlAttributes: new { title = "Raporty" })</h3>
+                    }
+                }
+            </li>
+            @*nie chce zeby sie sam wylogowywal, generalnie token powinien go wylogowywac - sprawdze zaraz*@
+            @*<li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>*@
+        </ul>
+                        }
+                    }
+                    else
+                    {
+    @*<ul class="nav navbar-nav navbar-right">
+        <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink", type="hidden"})</li>
+        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", type = "hidden" })</li>
+    </ul>*@
+}
